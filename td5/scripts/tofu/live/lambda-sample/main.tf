@@ -3,9 +3,8 @@ provider "aws" {
 }
 
 module "function" {
-  source = "https://github.com/brikis98/devops-book/tree/main/ch3/tofu/modules/lambda"
-
-  name = var.name
+  source = "git::https://github.com/vlad0sn/2e_git_td5.git//td5/scripts/tofu/modules/lambda"
+  name   = var.name
 
   src_dir = "${path.module}/src"
   runtime = "nodejs20.x"
@@ -18,6 +17,7 @@ module "function" {
     NODE_ENV = "production"
   }
 }
+
 
 module "gateway" {
   source = "github.com/vlad0sn/2e_git_td5//td5/scripts/tofu/modules/api-gateway"
