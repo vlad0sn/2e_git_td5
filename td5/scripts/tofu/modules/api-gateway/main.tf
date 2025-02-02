@@ -3,7 +3,6 @@ resource "aws_apigatewayv2_api" "api" {
   protocol_type = "HTTP"
 }
 
-
 resource "aws_apigatewayv2_integration" "lambda" {
   api_id             = aws_apigatewayv2_api.api.id
   integration_type   = "AWS_PROXY"
