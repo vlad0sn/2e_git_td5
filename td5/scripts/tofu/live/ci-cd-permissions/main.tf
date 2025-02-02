@@ -3,14 +3,14 @@ provider "aws" {
 }
 
 module "oidc_provider" {
-  source = "github.com/brikis98/devops-book//ch5/tofu/modules/github-aws-oidc"
+  source = "github.com/vlad0sn/2e_git_td5//td5/scripts/tofu/modules/github-aws-oidc"
 
   provider_url = "https://token.actions.githubusercontent.com" 
 
 }
 
 module "iam_roles" {
-  source = "github.com/brikis98/devops-book//ch5/tofu/modules/gh-actions-iam-roles"
+  source = "github.com/vlad0sn/2e_git_td5//td5/scripts/tofu/modules/gh-actions-iam-roles"
 
   name              = "lambda-sample"                           
   oidc_provider_arn = module.oidc_provider.oidc_provider_arn    
@@ -18,7 +18,7 @@ module "iam_roles" {
   enable_iam_role_for_testing = true                            
 
   # TODO: fill in your own repo name here!
-  github_repo      = "brikis98/fundamentals-of-devops-examples" 
+  github_repo      = "vlad0sn/2e_git_td5//td5/scripts" 
   lambda_base_name = "lambda-sample"                            
 
   enable_iam_role_for_plan  = true                                
