@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "function" {
-  source = "git::https://github.com/vlad0sn/2e_git_td5.git//td5/scripts/tofu/modules/lambda"
+  source = "git::https://github.com/brikis98/devops-book.git//ch3/tofu/modules/lambda"
   name   = var.name
 
   src_dir = "${path.module}/src"
@@ -20,9 +20,9 @@ module "function" {
 
 
 module "gateway" {
-  source = "github.com/vlad0sn/2e_git_td5//td5/scripts/tofu/modules/api-gateway"
+  source = "git::https://github.com/vlad0sn/2e_git_td5.git//td5/scripts/tofu/modules/api-gateway"
 
-  name = var.name
-  function_arn       = module.function.function_arn
+  name              = var.name
+  function_arn      = module.function.function_arn
   api_gateway_routes = ["GET /"]
 }
