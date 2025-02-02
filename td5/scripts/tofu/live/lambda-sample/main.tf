@@ -26,3 +26,8 @@ module "gateway" {
   function_arn      = module.function.function_arn
   region           = "us-east-2"
 }
+# Ajouter l'output pour récupérer l'api_endpoint
+output "api_endpoint" {
+  value = module.gateway.api_endpoint
+  description = "The endpoint URL of the API Gateway"
+}

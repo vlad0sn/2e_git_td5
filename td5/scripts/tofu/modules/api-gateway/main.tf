@@ -45,3 +45,9 @@ resource "aws_api_gateway_integration" "this" {
   integration_http_method  = "POST"
   uri                      = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${var.function_arn}/invocations"
 }
+
+# Ajouter un output pour l'URL de l'API Gateway
+output "api_endpoint" {
+  value = aws_api_gateway_rest_api.this.execution_arn
+  description = "The endpoint URL of the API Gateway"
+}
