@@ -2,8 +2,7 @@ name: Tofu Apply
 on: 
   push: 
     branches: ["main"]
-    paths:
-      - "td5/scripts/tofu/live/**.tf"
+    paths: ["td5/scripts/tofu/live/**"]
 
 jobs: 
   apply: 
@@ -17,7 +16,7 @@ jobs:
     steps: 
       - name: Checkout repository
         uses: actions/checkout@v2
-
+      
       - name: Detect changed OpenTofu directories
         id: changed-files
         uses: tj-actions/changed-files@v39
@@ -36,13 +35,39 @@ jobs:
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@v1
 
-      - name: Run OpenTofu apply on changed directories
+      - name: Tofu apply
+        id: apply
+        working-directory: td5/scripts/tofu/live/**
         run: |
-          for dir in $(ls td5/scripts/tofu/live); do
+          tofu init -no-color -input=false
+          tofu apply -no-color -input=false -lock-timeout=60m -auto-approve
+
+      - name: Find current PR
+        uses: jwalton/gh-find-current-pr@master
+        id: find_pr
+        with:
+          state: all
+
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v4
+        if: steps.find_pr.outputs.number
+        env: 
+          RESULT_EMOJI: ${{ steps.apply.outcome == 'success' && '✅' || '⚠' }}
+        with:
+          issue-number: ${{ steps.find_pr.outputs.number }}
+          body: |
+            ## ${{ env.RESULT_EMOJI }} `tofu apply` output
+            ```${{ steps.apply.outputs.stdout }}`
+        
+      
+      - uses: opentofu/setup-opentofu@v1
+      - name: Run OpenTofu Apply on changed directories
+        if: steps.changed-files.outputs.all_changed_files != ''
+        run: |
+          for dir in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "Running tofu apply in $dir"
-            cd td5/scripts/tofu/live/$dir || exit 1
+            cd "$dir"
             tofu init -no-color -input=false
             tofu apply -no-color -input=false -lock-timeout=60m -auto-approve
             cd - > /dev/null
           done
-      
