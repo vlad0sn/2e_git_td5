@@ -8,7 +8,7 @@ module "function" {
 
   src_dir = "${path.module}/src"
   runtime = "nodejs20.x"
-  handler = "index.handler"
+  handler = "index.handler" 
 
   memory_size = 128
   timeout     = 5
