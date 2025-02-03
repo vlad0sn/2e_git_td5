@@ -17,7 +17,7 @@ module "function" {
     NODE_ENV = "production"
   }
 }
-
+ 
 
 module "gateway" {
   source = "git::https://github.com/vlad0sn/2e_git_td5.git//td5/scripts/tofu/modules/api-gateway?ref=opentofu-tests"
