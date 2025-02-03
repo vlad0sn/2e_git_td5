@@ -36,13 +36,13 @@ jobs:
       - name: Setup OpenTofu
         uses: opentofu/setup-opentofu@v1
 
-      - name: Run OpenTofu Apply on changed directories
-        if: steps.changed-files.outputs.all_changed_files != ''
+      - name: Run OpenTofu apply on changed directories
         run: |
-          for dir in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for dir in $(ls td5/scripts/tofu/live); do
             echo "Running tofu apply in $dir"
-            cd "$dir"
+            cd td5/scripts/tofu/live/$dir || exit 1
             tofu init -no-color -input=false
             tofu apply -no-color -input=false -lock-timeout=60m -auto-approve
             cd - > /dev/null
           done
+      
