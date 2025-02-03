@@ -1,7 +1,7 @@
 provider "aws" {
   region = "us-east-2"
 }
-
+#test modif
 module "oidc_provider" {
   source = "github.com/vlad0sn/2e_git_td5//td5/scripts/tofu/modules/github-aws-oidc"
 
