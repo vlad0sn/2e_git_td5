@@ -1,4 +1,4 @@
-run "deploy" {
+run "deploy" { 
   command = apply
 }
 
